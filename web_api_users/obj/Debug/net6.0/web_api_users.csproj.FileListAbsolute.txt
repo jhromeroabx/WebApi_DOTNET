@@ -148,3 +148,5 @@ C:\Users\PC\Desktop\DOTNET_PROJECTS\WebApiDOTNET_users\web_api_users\obj\Debug\n
 C:\Users\PC\Desktop\DOTNET_PROJECTS\WebApiDOTNET_users\web_api_users\obj\Debug\net6.0\web_api_users.pdb
 C:\Users\PC\Desktop\DOTNET_PROJECTS\WebApiDOTNET_users\web_api_users\obj\Debug\net6.0\web_api_users.genruntimeconfig.cache
 C:\Users\PC\Desktop\DOTNET_PROJECTS\WebApiDOTNET_users\web_api_users\obj\Debug\net6.0\ref\web_api_users.dll
+C:\Users\PC\Desktop\DOTNET_PROJECTS\WebApiDOTNET_users\web_api_users\obj\Debug\net6.0\web_api_users.Properties.Resources.resources
+C:\Users\PC\Desktop\DOTNET_PROJECTS\WebApiDOTNET_users\web_api_users\obj\Debug\net6.0\web_api_users.csproj.GenerateResource.cache

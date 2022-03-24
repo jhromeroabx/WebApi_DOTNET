@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using web_api_users.Controllers.Clients;
 using web_api_users.Controllers.Data;
 
 namespace web_api_users
@@ -36,6 +37,10 @@ namespace web_api_users
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "web_api_users", Version = "v1" });
             });
+
+            // contenedor de dependencias..
+            services.AddSingleton<IFileManagerFactory, FileManager>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

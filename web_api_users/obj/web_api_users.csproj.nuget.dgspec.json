@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PC\\Desktop\\web_api_users\\web_api_users.csproj": {}
+    "C:\\Users\\PC\\Desktop\\DOTNET_PROJECTS\\WebApiDOTNET_users\\web_api_users\\web_api_users.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PC\\Desktop\\web_api_users\\web_api_users.csproj": {
+    "C:\\Users\\PC\\Desktop\\DOTNET_PROJECTS\\WebApiDOTNET_users\\web_api_users\\web_api_users.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PC\\Desktop\\web_api_users\\web_api_users.csproj",
+        "projectUniqueName": "C:\\Users\\PC\\Desktop\\DOTNET_PROJECTS\\WebApiDOTNET_users\\web_api_users\\web_api_users.csproj",
         "projectName": "web_api_users",
-        "projectPath": "C:\\Users\\PC\\Desktop\\web_api_users\\web_api_users.csproj",
+        "projectPath": "C:\\Users\\PC\\Desktop\\DOTNET_PROJECTS\\WebApiDOTNET_users\\web_api_users\\web_api_users.csproj",
         "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PC\\Desktop\\web_api_users\\obj\\",
+        "outputPath": "C:\\Users\\PC\\Desktop\\DOTNET_PROJECTS\\WebApiDOTNET_users\\web_api_users\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",

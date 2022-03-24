@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,15 +12,23 @@ namespace web_api_users.Controllers
     {
         private readonly AppDbContext _db;
 
+
+
         public CategoriaController(AppDbContext db)
         {
             _db = db;
         }
+
         [HttpGet]
         [Route("GetAll")]//especificamos para evitar endPoints repetidos
         public async Task<IActionResult> GetCategorias()
         {
             var lista = await _db.Categorias.OrderBy(c => c.Nombre).ToListAsync();
+
+            if (lista == null)
+            {
+                return NotFound("NO HAY CATEGORIAS");
+            }
 
             return Ok(lista);
         }
@@ -34,7 +41,7 @@ namespace web_api_users.Controllers
 
             if (cat == null)
             {
-                return NotFound();
+                return NotFound("NO EXISTE LA CATEGORIA: " + id);
             }
 
             return Ok(cat);

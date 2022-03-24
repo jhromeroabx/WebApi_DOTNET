@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SBZiPZM3PVjDADlc07mdUwrddjV0DTx0BohdKuZYWeQWq8Hafm7jXWqm7K+NqK+BLr1xpATYg01DOh05phAtdQ==",
+  "dgSpecHash": "xGeGaklG+VylVz7a1q5CWOzFLyG1EmPTWOhiBSuUm5Snv0sjpDYYHkp+94jSELVrtkI/v7jWYK9lEilJzXjNoQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\PC\\Desktop\\web_api_users\\web_api_users.csproj",
+  "projectFilePath": "C:\\Users\\PC\\Desktop\\DOTNET_PROJECTS\\WebApiDOTNET_users\\web_api_users\\web_api_users.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PC\\.nuget\\packages\\crc32.net\\1.2.0\\crc32.net.1.2.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",

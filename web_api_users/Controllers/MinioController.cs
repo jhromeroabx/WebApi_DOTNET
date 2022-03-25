@@ -143,16 +143,16 @@ namespace web_api_users.Controllers
             }
         }
 
-        private byte[] ReadAllBytes(IFormFile file)
-        {
-            byte[] buffer = null;
-            using (FileStream fs = new FileStream(file.Name, FileMode.Open, FileAccess.Read))
-            {
-                buffer = new byte[fs.Length];
-                fs.Read(buffer, 0, (int)fs.Length);
-            }
-            return buffer;
-        }
+        //private byte[] ReadAllBytes(IFormFile file)
+        //{
+        //    byte[] buffer = null;
+        //    using (FileStream fs = new FileStream(file.Name, FileMode.Open, FileAccess.Read))
+        //    {
+        //        buffer = new byte[fs.Length];
+        //        fs.Read(buffer, 0, (int)fs.Length);
+        //    }
+        //    return buffer;
+        //}
 
         [HttpPost]
         [Route("CreateObjectMINio")]
@@ -194,8 +194,11 @@ namespace web_api_users.Controllers
         [Route("GetObjectMINio")]
         public async Task<IActionResult> GetObjectMINio(string nameBucket, string nameObject)
         {
+            byte[] bytesFromPhoto = null;
             try
             {
+                
+
                 await _fileManagerFactory.GetMinio().StatObjectAsync(nameBucket, nameObject);
 
                 await _fileManagerFactory.GetMinio().GetObjectAsync(nameBucket, nameObject,
@@ -203,15 +206,25 @@ namespace web_api_users.Controllers
                                     {
                                         //stream.CopyToAsync(Console.OpenStandardOutput());
 
-                                        string path = Path.Combine(_environment.ContentRootPath, "Images", $"{nameObject}.jpg");
-                                        using (var stream_fs = new FileStream(path, FileMode.Create))
+                                        //string path = Path.Combine(_environment.ContentRootPath, "Images", $"{nameObject}.jpg");
+                                        //using (var stream_fs = new FileStream(path, FileMode.Create))
+                                        //{
+                                        //    await stream.CopyToAsync(stream_fs);
+                                        //}
+                                        byte[] buffer = new byte[16 * 1024];
+                                        using (MemoryStream ms = new MemoryStream())
                                         {
-                                            await stream.CopyToAsync(stream_fs);
+                                            int read;
+                                            while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
+                                            {
+                                                ms.Write(buffer, 0, read);
+                                            }
+                                            bytesFromPhoto = ms.ToArray();
                                         }
                                     });
-                Byte[] bphoto;
-                bphoto = await System.IO.File.ReadAllBytesAsync(Path.Combine(_environment.ContentRootPath, "Images", $"{nameObject}.jpg"));
-                return File(bphoto, "image/jpeg");
+                Byte[] bphoto = bytesFromPhoto;
+                //bphoto = await System.IO.File.ReadAllBytesAsync(Path.Combine(_environment.ContentRootPath, "Images", $"{nameObject}.jpg"));
+                return File(fileContents: bphoto, "image/jpeg");
             }
             catch (Exception ex)
             {

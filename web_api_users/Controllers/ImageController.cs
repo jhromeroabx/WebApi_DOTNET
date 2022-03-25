@@ -24,8 +24,6 @@ namespace web_api_users.Controllers
         {
             try
             {
-                //var file = Request.Form.Files[0];
-                string fName = file.FileName;
                 string path = Path.Combine(_environment.ContentRootPath, "Images", file.FileName);
                 using (var stream = new FileStream(path, FileMode.Create))
                 {

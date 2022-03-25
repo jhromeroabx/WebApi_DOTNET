@@ -14,7 +14,6 @@ namespace web_api_users.Controllers
     [ApiController]
     public class MinioController : ControllerBase
     {
-        // private MinioClient _minio;
         private readonly IFileManagerFactory _fileManagerFactory;
         private readonly IWebHostEnvironment _environment;
 
@@ -53,8 +52,6 @@ namespace web_api_users.Controllers
                     lista += "\n bucket '" + bucket.Name + "' created at " + bucket.CreationDate + "\n";
                 }
 
-                //var lista = listarBuckets(_fileManagerFactory.GetMinio());
-
                 return Ok("Conecto al MYMINIO: " + lista);
             }
             catch (Exception ex)
@@ -62,20 +59,6 @@ namespace web_api_users.Controllers
                 return Conflict("No Conecto al MYMINIO" + ex);
             }
         }
-
-        //private async Task<string> listarBuckets(MinioClient minio)
-        //{
-        //    var listBucketResponse = await minio.ListBucketsAsync();
-
-        //    var lista = "";
-
-        //    foreach (var bucket in listBucketResponse.Buckets)
-        //    {
-        //        lista += "\n bucket '" + bucket.Name + "' created at " + bucket.CreationDate + "\n";
-        //    }
-
-        //    return lista;
-        //}
 
         [HttpPost]
         [Route("CreateBucketMINio")]
@@ -143,17 +126,6 @@ namespace web_api_users.Controllers
             }
         }
 
-        //private byte[] ReadAllBytes(IFormFile file)
-        //{
-        //    byte[] buffer = null;
-        //    using (FileStream fs = new FileStream(file.Name, FileMode.Open, FileAccess.Read))
-        //    {
-        //        buffer = new byte[fs.Length];
-        //        fs.Read(buffer, 0, (int)fs.Length);
-        //    }
-        //    return buffer;
-        //}
-
         [HttpPost]
         [Route("CreateObjectMINio")]
         public async Task<IActionResult> CreateObjectMINio(string nameBucket, string nameObject, IFormFile file)
@@ -197,20 +169,11 @@ namespace web_api_users.Controllers
             byte[] bytesFromPhoto = null;
             try
             {
-                
-
                 await _fileManagerFactory.GetMinio().StatObjectAsync(nameBucket, nameObject);
 
                 await _fileManagerFactory.GetMinio().GetObjectAsync(nameBucket, nameObject,
                                     async (stream) =>
                                     {
-                                        //stream.CopyToAsync(Console.OpenStandardOutput());
-
-                                        //string path = Path.Combine(_environment.ContentRootPath, "Images", $"{nameObject}.jpg");
-                                        //using (var stream_fs = new FileStream(path, FileMode.Create))
-                                        //{
-                                        //    await stream.CopyToAsync(stream_fs);
-                                        //}
                                         byte[] buffer = new byte[16 * 1024];
                                         using (MemoryStream ms = new MemoryStream())
                                         {
@@ -222,8 +185,7 @@ namespace web_api_users.Controllers
                                             bytesFromPhoto = ms.ToArray();
                                         }
                                     });
-                Byte[] bphoto = bytesFromPhoto;
-                //bphoto = await System.IO.File.ReadAllBytesAsync(Path.Combine(_environment.ContentRootPath, "Images", $"{nameObject}.jpg"));
+                byte[] bphoto = bytesFromPhoto;
                 return File(fileContents: bphoto, "image/jpeg");
             }
             catch (Exception ex)

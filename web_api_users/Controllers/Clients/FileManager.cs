@@ -9,9 +9,9 @@ namespace web_api_users.Controllers.Clients
         public FileManager()
         {
             this.minio = new MinioClient()
-                                    .WithEndpoint("192.168.1.2:8500")
-                                    .WithCredentials("beedrone.webapi",
-                                             "beedrone.webapi123@123")
+                                    .WithEndpoint("192.168.18.6:8500")
+                                    .WithCredentials("loasi.wastore",
+                                             "loasi.wastore@wasd12125")
                                     .Build();
         }
 
@@ -30,9 +30,9 @@ namespace web_api_users.Controllers.Clients
         {
             if (this.minio == null)
                 this.minio = new MinioClient()
-                                    .WithEndpoint("192.168.1.2:8500")
-                                    .WithCredentials("beedrone.webapi",
-                                             "beedrone.webapi123@123")
+                                    .WithEndpoint("192.168.18.6:8500")
+                                    .WithCredentials("loasi.wastore",
+                                             "loasi.wastore@wasd12125")
                                     .Build();
         }
     }

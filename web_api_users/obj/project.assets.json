@@ -5573,19 +5573,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PC\\.nuget\\packages\\": {}
+    "C:\\Users\\jhose\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\PC\\Desktop\\DOTNET_PROJECTS\\WebApiDOTNET_users\\web_api_users\\web_api_users.csproj",
+      "projectUniqueName": "D:\\REPOSITORIOS GIT FORK\\WebApi_DOTNET\\web_api_users\\web_api_users.csproj",
       "projectName": "web_api_users",
-      "projectPath": "C:\\Users\\PC\\Desktop\\DOTNET_PROJECTS\\WebApiDOTNET_users\\web_api_users\\web_api_users.csproj",
-      "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\PC\\Desktop\\DOTNET_PROJECTS\\WebApiDOTNET_users\\web_api_users\\obj\\",
+      "projectPath": "D:\\REPOSITORIOS GIT FORK\\WebApi_DOTNET\\web_api_users\\web_api_users.csproj",
+      "packagesPath": "C:\\Users\\jhose\\.nuget\\packages\\",
+      "outputPath": "D:\\REPOSITORIOS GIT FORK\\WebApi_DOTNET\\web_api_users\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\jhose\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5656,7 +5656,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   }

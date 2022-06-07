@@ -22,60 +22,22 @@ namespace web_api_users.Controllers
             _environment = environment;
         }
 
-        //[HttpPost]
-        //[Route("ConnectToMINio")]
-        //public async Task<IActionResult> ConnectToMINio([FromBody] CredentialsMINio credentials, bool hard_soft)
-        ///*
-        //    {
-        //        "endpoint": "192.168.1.17:9000",
-        //        "accessKey": "admin",
-        //        "secretKey": "password"
-        //    }
-        // */
-        //{
-        //    try
-        //    {
-        //        if (hard_soft)
-        //        {
-        //            _fileManagerFactory.SetupMinioHard();
-        //        }
-        //        else
-        //        {
-        //            _fileManagerFactory.SetupMinio(new MinioClient()
-        //                                    .WithEndpoint(credentials.endpoint)
-        //                                    .WithCredentials(credentials.accessKey,
-        //                                             credentials.secretKey)
-        //                                    //.WithSSL()
-        //                                    .Build());
-        //        }
-
-        //        var listBucketResponse = await _fileManagerFactory.GetMinio().ListBucketsAsync();
-
-        //        var lista = "";
-
-        //        foreach (var bucket in listBucketResponse.Buckets)
-        //        {
-        //            lista += "\n bucket '" + bucket.Name + "' created at " + bucket.CreationDate + "\n";
-        //        }
-
-        //        return Ok("Conecto al MYMINIO: " + lista);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Conflict("No Conecto al MYMINIO" + ex);
-        //    }
-        //}
-
         [HttpPost]
         [Route("CreateBucketMINio")]
         public async Task<IActionResult> CreateBucketMINio(string name)
         {
             try
             {
-                bool found = await _fileManagerFactory.GetMinio().BucketExistsAsync(name);
+                BucketExistsArgs bucketExistsArgs = new BucketExistsArgs().WithBucket(name);
+
+                bool found = await _fileManagerFactory.GetMinio().BucketExistsAsync(bucketExistsArgs);
                 if (!found)
                 {
-                    await _fileManagerFactory.GetMinio().MakeBucketAsync(name, "/Data");
+                    MakeBucketArgs makeBucketArgs = new MakeBucketArgs()
+                        .WithBucket(name)
+                        .WithLocation("/Data");
+
+                    await _fileManagerFactory.GetMinio().MakeBucketAsync(makeBucketArgs);
                 }
                 else
                 {
@@ -105,10 +67,14 @@ namespace web_api_users.Controllers
         {
             try
             {
-                bool found = await _fileManagerFactory.GetMinio().BucketExistsAsync(name);
+                BucketExistsArgs bucketExistsArgs = new BucketExistsArgs().WithBucket(name);
+
+                bool found = await _fileManagerFactory.GetMinio().BucketExistsAsync(bucketExistsArgs);
                 if (found)
                 {
-                    await _fileManagerFactory.GetMinio().RemoveBucketAsync(name);
+                    RemoveBucketArgs removeBucketArgs = new RemoveBucketArgs().WithBucket(name);
+
+                    await _fileManagerFactory.GetMinio().RemoveBucketAsync(removeBucketArgs);
                 }
                 else
                 {
@@ -141,13 +107,7 @@ namespace web_api_users.Controllers
 
             try
             {
-                //var _file = ReadAllBytes(file);
                 var contentType = "image/jpeg";
-
-                //MemoryStream filestream = new(_file);
-
-                //byte[] bs = System.IO.File.ReadAllBytes(fileName);
-                //System.IO.MemoryStream filestream = new System.IO.MemoryStream(bs);
 
                 PutObjectArgs args = new PutObjectArgs()
                                                     .WithBucket(nameBucket)
@@ -155,7 +115,6 @@ namespace web_api_users.Controllers
                                                     .WithStreamData(file.OpenReadStream())
                                                     .WithObjectSize(file.OpenReadStream().Length)
                                                     .WithContentType(contentType)
-                                                    //.WithHeaders(metaData)
                                                     .WithServerSideEncryption(null);
 
                 await _fileManagerFactory.GetMinio().PutObjectAsync(args);
@@ -175,11 +134,11 @@ namespace web_api_users.Controllers
             byte[] bytesFromPhoto = null;
             try
             {
-                StatObjectArgs args_stat = new StatObjectArgs().WithBucket(nameBucket).WithObject(nameObject);
+                StatObjectArgs statObjectArgs = new StatObjectArgs().WithBucket(nameBucket).WithObject(nameObject);
 
-                await _fileManagerFactory.GetMinio().StatObjectAsync(args_stat);
+                await _fileManagerFactory.GetMinio().StatObjectAsync(statObjectArgs);
 
-                GetObjectArgs args = new GetObjectArgs().WithCallbackStream(async (stream) =>
+                GetObjectArgs args = new GetObjectArgs().WithCallbackStream((stream) =>
                 {
                     byte[] buffer = new byte[16 * 1024];
                     using (MemoryStream ms = new MemoryStream())

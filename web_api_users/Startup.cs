@@ -48,6 +48,7 @@ namespace web_api_users
         {
             if (env.IsDevelopment())
             {
+                //SI FALLA EL SWAGGER SACARLO DEL IF
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "web_api_users v1"));

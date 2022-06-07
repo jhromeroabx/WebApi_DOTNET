@@ -6,7 +6,8 @@ WORKDIR /app
 #ENV ASPNETCORE_HTTP_PORT https://+:5001
 ENV ASPNETCORE_URLS http://*:5000
 #
-ENV ASPNETCORE_ENVIRONMENT=Development #FOR SWAGGER
+#FOR SWAGGER
+ENV ASPNETCORE_ENVIRONMENT=Development
 #
 EXPOSE 5000
 EXPOSE 5001
@@ -26,3 +27,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "web_api_users.dll"]
+# docker build --rm -t minio-loasi .

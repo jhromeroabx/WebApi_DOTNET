@@ -21,5 +21,8 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
+# ignore or exclude build directory
+*/build*
+*/*/build*
 LICENSE
 README.md

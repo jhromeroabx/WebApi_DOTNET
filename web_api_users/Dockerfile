@@ -25,4 +25,4 @@ RUN dotnet publish "web_api_users.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "web_api_users.dll
+ENTRYPOINT ["dotnet", "web_api_users.dll"]

@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\REPOSITORIOS GIT FORK\\WebApi_DOTNET\\web_api_users\\web_api_users.csproj": {}
+    "/home/loasi/Documentos/PROYECTOS/WEB_API_MINIO/WebApi_DOTNET/web_api_users/web_api_users.csproj": {}
   },
   "projects": {
-    "D:\\REPOSITORIOS GIT FORK\\WebApi_DOTNET\\web_api_users\\web_api_users.csproj": {
+    "/home/loasi/Documentos/PROYECTOS/WEB_API_MINIO/WebApi_DOTNET/web_api_users/web_api_users.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\REPOSITORIOS GIT FORK\\WebApi_DOTNET\\web_api_users\\web_api_users.csproj",
+        "projectUniqueName": "/home/loasi/Documentos/PROYECTOS/WEB_API_MINIO/WebApi_DOTNET/web_api_users/web_api_users.csproj",
         "projectName": "web_api_users",
-        "projectPath": "D:\\REPOSITORIOS GIT FORK\\WebApi_DOTNET\\web_api_users\\web_api_users.csproj",
-        "packagesPath": "C:\\Users\\jhose\\.nuget\\packages\\",
-        "outputPath": "D:\\REPOSITORIOS GIT FORK\\WebApi_DOTNET\\web_api_users\\obj\\",
+        "projectPath": "/home/loasi/Documentos/PROYECTOS/WEB_API_MINIO/WebApi_DOTNET/web_api_users/web_api_users.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/home/loasi/Documentos/PROYECTOS/WEB_API_MINIO/WebApi_DOTNET/web_api_users/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jhose\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/root/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -85,7 +83,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.300/RuntimeIdentifierGraph.json"
         }
       }
     }

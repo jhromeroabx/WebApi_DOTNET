@@ -61,6 +61,29 @@ namespace web_api_users.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ListBucketsMINio")]
+        public async Task<IActionResult> ListBucketsMINio()
+        {
+            try
+            {
+                var listBucketResponse = await _fileManagerFactory.GetMinio().ListBucketsAsync();
+
+                var lista = "";
+
+                foreach (var bucket in listBucketResponse.Buckets)
+                {
+                    lista += "\n bucket '" + bucket.Name + "' created at " + bucket.CreationDate + "\n";
+                }
+
+                return Ok(lista);
+            }
+            catch (Exception ex)
+            {
+                return Conflict("No se creo el bucket" + ex);
+            }
+        }
+
         [HttpDelete]
         [Route("DeleteBucketMINio")]
         public async Task<IActionResult> DeleteBucketMINio(string name)

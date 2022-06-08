@@ -130,6 +130,14 @@ namespace web_api_users.Controllers
 
             try
             {
+                StatObjectArgs statObjectArgs = new StatObjectArgs().WithBucket(nameBucket).WithObject(nameObject);
+
+                var obj = await _fileManagerFactory.GetMinio().StatObjectAsync(statObjectArgs);
+                if (obj != null)
+                {
+                    return Conflict($"Se encontro el object: {nameObject} existente, no se puede reemplazar, cambiar el nombre!");
+                }
+
                 var contentType = "image/jpeg";
 
                 PutObjectArgs args = new PutObjectArgs()
@@ -146,7 +154,7 @@ namespace web_api_users.Controllers
             }
             catch (Exception ex)
             {
-                return Conflict($"No se encontro el object: {nameObject}" + ex);
+                return Conflict($"No se creo el object: {nameObject}" + ex);
             }
         }
 

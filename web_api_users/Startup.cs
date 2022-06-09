@@ -55,8 +55,8 @@ namespace web_api_users
             }
 
             app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "web_api_users v1"));
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "web_api_users v1"));
 
             app.UseHttpsRedirection();
 

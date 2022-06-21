@@ -17,3 +17,11 @@ apt-get install -y aspnetcore-runtime-6.0
 
 -- 4
 apt-get install -y dotnet-runtime-6.0
+
+
+# docker build -t loasi-minio .
+
+# docker run \
+# --name loasi-minio \
+# --restart always \
+# -d -p 7777:80 loasi-minio-test1

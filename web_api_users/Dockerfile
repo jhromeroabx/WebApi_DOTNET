@@ -22,3 +22,10 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "web_api_users.dll"]
+
+# docker build -t dotnet-minio-webapi .
+
+# docker run \
+# --name miniowebapi \
+# --restart always \
+# -d -p 7770:80 -p 7773:443 dotnet-minio-webapi

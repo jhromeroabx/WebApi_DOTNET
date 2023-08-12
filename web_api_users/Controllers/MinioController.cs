@@ -123,7 +123,7 @@ namespace web_api_users.Controllers
 
         [HttpPost]
         [Route("CreateObjectMINio")]
-        public async Task<IActionResult> CreateObjectMINio(string nameBucket, string nameObject, IFormFile file)
+        public async Task<IActionResult> CreateObjectMINio(string nameBucket, string nameObject,string contentType, IFormFile file)
         {
             if (file.Length <= 0)
                 return BadRequest("Empty file");
@@ -140,7 +140,7 @@ namespace web_api_users.Controllers
             }
             catch (Minio.Exceptions.ObjectNotFoundException)
             {
-                var contentType = "image/jpeg";
+                //var contentType = "image/jpeg";
 
                 PutObjectArgs args = new PutObjectArgs()
                                                     .WithBucket(nameBucket)

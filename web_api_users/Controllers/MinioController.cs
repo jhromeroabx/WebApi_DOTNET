@@ -116,7 +116,7 @@ namespace web_api_users.Controllers
                     }
 
                     IDisposable subscription = observable.Subscribe(
-                        item => lista += "\n object: '" + item.Key + " id: " + item.VersionId + "' created or modified at " + item.LastModifiedDateTime + "\n",
+                        item => lista += "\n object: '" + item.Key + "' created or modified at " + item.LastModifiedDateTime + "\n",
                         ex => lista += "\n Error ocurred:" + ex.Message + " \n",
                         () => {
                             lista += "OnComplete: {0}";
@@ -190,7 +190,7 @@ namespace web_api_users.Controllers
 
                 var obj = await _fileManagerFactory.GetMinio().StatObjectAsync(statObjectArgs);
 
-                return Conflict($"Se encontro el object: {nameObject} existente, no se puede reemplazar, cambiar el nombre!");                
+                return Conflict($"Se encontro el object: {nameObject} existente, no se puede reemplazar, cambie el nombre!");                
             }
             catch (Minio.Exceptions.ObjectNotFoundException)
             {
@@ -248,6 +248,29 @@ namespace web_api_users.Controllers
             catch (Exception ex)
             {
                 return Conflict($"No se encontro el object: {nameObject}" + ex);
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteObjectMINio")]
+        public async Task<IActionResult> DeleteObjectMINio(string bucket, string objectname)
+        {
+            try
+            {
+                StatObjectArgs statObjectArgs = new StatObjectArgs().WithBucket(bucket).WithObject(objectname);
+
+                await _fileManagerFactory.GetMinio().StatObjectAsync(statObjectArgs);
+
+                RemoveObjectArgs rmArgs = new RemoveObjectArgs()
+                                              .WithBucket(bucket)
+                                              .WithObject(objectname);
+                await _fileManagerFactory.GetMinio().RemoveObjectAsync(rmArgs);
+                
+                return Ok($"se borro el object {objectname}");
+            }
+            catch (Exception ex)
+            {
+                return Conflict($"No se borro el object: {objectname}: -" + ex);
             }
         }
     }

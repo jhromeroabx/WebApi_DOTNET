@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Minio;
+using Minio.DataModel;
+using Minio.Exceptions;
 using System;
 using System.IO;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using web_api_users.Controllers.Clients;
 
@@ -84,6 +87,57 @@ namespace web_api_users.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ListObjectsMINio")]
+        public async Task<IActionResult> ListObjectsMINio(string name)
+        {
+            try
+            {
+                var lista = "";
+                BucketExistsArgs bucketExistsArgs = new BucketExistsArgs().WithBucket(name);
+
+                bool found = await _fileManagerFactory.GetMinio().BucketExistsAsync(bucketExistsArgs);
+                if (found)
+                {
+                    
+
+                    ListObjectsArgs args = new ListObjectsArgs()
+                                              .WithBucket(name)
+                                              //.WithPrefix("prefix")
+                                              .WithRecursive(true);
+                    IObservable<Item> observable = _fileManagerFactory.GetMinio().ListObjectsAsync(args);                    
+                    var completionSource = new TaskCompletionSource<string>();
+
+                    var isObservableEmpty = !await observable.Any();
+
+                    if (isObservableEmpty)
+                    {
+                        return Ok("No hay objetos");
+                    }
+
+                    IDisposable subscription = observable.Subscribe(
+                        item => lista += "\n object: '" + item.Key + " id: " + item.VersionId + "' created or modified at " + item.LastModifiedDateTime + "\n",
+                        ex => lista += "\n Error ocurred:" + ex.Message + " \n",
+                        () => {
+                            lista += "OnComplete: {0}";
+                            completionSource.SetResult(lista);
+                        });
+
+                    await completionSource.Task;
+
+                    return Ok(lista);
+                }
+                else
+                {
+                    return Conflict("El bucket no existe!");
+                }
+            }
+            catch (MinioException ex)
+            {
+                return Conflict($"No se listo los objetos del bucket {name}: " + ex);
+            }
+        }
+                
         [HttpDelete]
         [Route("DeleteBucketMINio")]
         public async Task<IActionResult> DeleteBucketMINio(string name)

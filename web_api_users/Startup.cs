@@ -35,6 +35,17 @@ namespace web_api_users
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "web_api_users", Version = "v1" });
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:80", "http://otro_dominio_php")
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
+
             // contenedor de dependencias..
             services.AddSingleton<IFileManagerFactory, FileManager>();
 

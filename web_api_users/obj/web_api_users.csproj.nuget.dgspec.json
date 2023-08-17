@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/home/diegorl/PROYECTOS_BD/WEBAPI/web_api_minio/WebApi_DOTNET/web_api_users/web_api_users.csproj": {}
+    "C:\\Users\\jhose\\source\\repos\\jhromeroabx\\WebApi_DOTNET\\web_api_users\\web_api_users.csproj": {}
   },
   "projects": {
-    "/home/diegorl/PROYECTOS_BD/WEBAPI/web_api_minio/WebApi_DOTNET/web_api_users/web_api_users.csproj": {
+    "C:\\Users\\jhose\\source\\repos\\jhromeroabx\\WebApi_DOTNET\\web_api_users\\web_api_users.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/diegorl/PROYECTOS_BD/WEBAPI/web_api_minio/WebApi_DOTNET/web_api_users/web_api_users.csproj",
+        "projectUniqueName": "C:\\Users\\jhose\\source\\repos\\jhromeroabx\\WebApi_DOTNET\\web_api_users\\web_api_users.csproj",
         "projectName": "web_api_users",
-        "projectPath": "/home/diegorl/PROYECTOS_BD/WEBAPI/web_api_minio/WebApi_DOTNET/web_api_users/web_api_users.csproj",
-        "packagesPath": "/root/.nuget/packages/",
-        "outputPath": "/home/diegorl/PROYECTOS_BD/WEBAPI/web_api_minio/WebApi_DOTNET/web_api_users/obj/",
+        "projectPath": "C:\\Users\\jhose\\source\\repos\\jhromeroabx\\WebApi_DOTNET\\web_api_users\\web_api_users.csproj",
+        "packagesPath": "C:\\Users\\jhose\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jhose\\source\\repos\\jhromeroabx\\WebApi_DOTNET\\web_api_users\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/root/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\jhose\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -67,6 +69,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             }
           },
           "imports": [
@@ -87,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.301/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }

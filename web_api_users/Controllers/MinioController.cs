@@ -5,6 +5,9 @@ using Minio;
 using Minio.DataModel;
 using Minio.Exceptions;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -99,13 +102,13 @@ namespace web_api_users.Controllers
                 bool found = await _fileManagerFactory.GetMinio().BucketExistsAsync(bucketExistsArgs);
                 if (found)
                 {
-                    
+
 
                     ListObjectsArgs args = new ListObjectsArgs()
                                               .WithBucket(name)
                                               //.WithPrefix("prefix")
                                               .WithRecursive(true);
-                    IObservable<Item> observable = _fileManagerFactory.GetMinio().ListObjectsAsync(args);                    
+                    IObservable<Item> observable = _fileManagerFactory.GetMinio().ListObjectsAsync(args);
                     var completionSource = new TaskCompletionSource<string>();
 
                     var isObservableEmpty = !await observable.Any();
@@ -118,7 +121,8 @@ namespace web_api_users.Controllers
                     IDisposable subscription = observable.Subscribe(
                         item => lista += "\n object: '" + item.Key + "' created or modified at " + item.LastModifiedDateTime + "\n",
                         ex => lista += "\n Error ocurred:" + ex.Message + " \n",
-                        () => {
+                        () =>
+                        {
                             lista += "OnComplete: {0}";
                             completionSource.SetResult(lista);
                         });
@@ -137,7 +141,7 @@ namespace web_api_users.Controllers
                 return Conflict($"No se listo los objetos del bucket {name}: " + ex);
             }
         }
-                
+
         [HttpDelete]
         [Route("DeleteBucketMINio")]
         public async Task<IActionResult> DeleteBucketMINio(string name)
@@ -177,7 +181,7 @@ namespace web_api_users.Controllers
 
         [HttpPost]
         [Route("CreateObjectMINio")]
-        public async Task<IActionResult> CreateObjectMINio(string nameBucket, string nameObject,string contentType, IFormFile file)
+        public async Task<IActionResult> CreateObjectMINio(string nameBucket, string nameObject, string contentType, IFormFile file)
         {
             if (file.Length <= 0)
                 return BadRequest("Empty file");
@@ -190,28 +194,90 @@ namespace web_api_users.Controllers
 
                 var obj = await _fileManagerFactory.GetMinio().StatObjectAsync(statObjectArgs);
 
-                return Conflict($"Se encontro el object: {nameObject} existente, no se puede reemplazar, cambie el nombre!");                
+                return Conflict($"Se encontro el object: {nameObject} existente, no se puede reemplazar, cambie el nombre!");
             }
             catch (Minio.Exceptions.ObjectNotFoundException)
             {
-                //var contentType = "image/jpeg";
+                List<string> allowedContentTypes = new()
+                {
+                "image/apng",
+                "image/avif",
+                "image/jpeg",
+                "image/png",
+                "image/svg+xml",
+                "image/webp"
+                };
 
-                PutObjectArgs args = new PutObjectArgs()
-                                                    .WithBucket(nameBucket)
-                                                    .WithObject(nameObject)
-                                                    .WithStreamData(file.OpenReadStream())
-                                                    .WithObjectSize(file.OpenReadStream().Length)
-                                                    .WithContentType(contentType)
-                                                    .WithServerSideEncryption(null);
+                int width = 0;
+                int height = 0;
 
-                await _fileManagerFactory.GetMinio().PutObjectAsync(args);
+                // Si el archivo es un tipo de imagen permitido
+                if (allowedContentTypes.Contains(contentType))
+                {
+                    int maxResolutionWidth = 1200;
+                    int maxResolutionHeight = 600;
 
-                return Ok("se creo la imagen!!!");
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(memoryStream);
+                        memoryStream.Position = 0;
+
+                        using (var image = new Bitmap(memoryStream))
+                        {
+                            if (image.Width > maxResolutionWidth && image.Height > maxResolutionHeight)
+                            {
+                                // Reducción de resolución utilizando Bitmap
+                                using var reducedImage = new Bitmap(image, maxResolutionWidth, maxResolutionHeight);
+                                using var memoryStreamNext = new MemoryStream();
+                                reducedImage.Save(memoryStreamNext, ImageFormat.Jpeg); // Cambia el formato según tus necesidades
+                                memoryStreamNext.Position = 0;
+                                // Continuar con el procesamiento y almacenamiento del objeto reducido
+                                await ProcessAndStoreImage(nameBucket, nameObject, contentType, memoryStreamNext);
+                                return Ok("¡Se creó la imagen!");
+                            }
+                            else
+                            {
+                                // Continuar con el procesamiento y almacenamiento del objeto original
+                                using var stream = file.OpenReadStream();
+                                await ProcessAndStoreImage(nameBucket, nameObject, contentType, stream);
+                                return Ok("¡Se creó la imagen!");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Continuar con el procesamiento y almacenamiento del objeto original
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(memoryStream);
+                        memoryStream.Position = 0;
+
+                        await ProcessAndStoreImage(nameBucket, nameObject, contentType, memoryStream);
+                        return Ok("¡Se creó la imagen!");
+                    }
+                }                
             }
             catch (Exception ex)
             {
                 return Conflict($"No se creo el object: {nameObject} - el error es:" + ex);
             }
+        }
+
+        private async Task ProcessAndStoreImage(string nameBucket, string nameObject, string contentType, Stream stream)
+        {
+            // Puedes realizar cualquier procesamiento adicional necesario antes de almacenar la imagen
+            // ...
+
+            PutObjectArgs args = new PutObjectArgs()
+                .WithBucket(nameBucket)
+                .WithObject(nameObject)
+                .WithStreamData(stream)
+                .WithObjectSize(stream.Length)
+                .WithContentType(contentType)
+                .WithServerSideEncryption(null);
+
+            await _fileManagerFactory.GetMinio().PutObjectAsync(args);
         }
 
         [HttpGet]
@@ -265,7 +331,7 @@ namespace web_api_users.Controllers
                                               .WithBucket(bucket)
                                               .WithObject(objectname);
                 await _fileManagerFactory.GetMinio().RemoveObjectAsync(rmArgs);
-                
+
                 return Ok($"se borro el object {objectname}");
             }
             catch (Exception ex)

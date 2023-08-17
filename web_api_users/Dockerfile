@@ -5,6 +5,9 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+# Instala libgdiplus
+RUN apt-get update && apt-get install -y libgdiplus
+
 ENV ASPNETCORE_ENVIRONMENT=Development
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build

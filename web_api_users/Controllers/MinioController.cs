@@ -22,12 +22,12 @@ namespace web_api_users.Controllers
     public class MinioController : ControllerBase
     {
         private readonly IFileManagerFactory _fileManagerFactory;
-        //private readonly IWebHostEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
 
         public MinioController(IFileManagerFactory fileManagerFactory, IWebHostEnvironment environment)
         {
             _fileManagerFactory = fileManagerFactory;
-            //_environment = environment;
+            _environment = environment;
         }
 
         [HttpPost]

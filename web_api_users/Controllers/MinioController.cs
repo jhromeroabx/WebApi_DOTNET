@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reactive.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using web_api_users.Controllers.Clients;
 using web_api_users.Controllers.ParamsDTO;
@@ -90,7 +91,11 @@ namespace web_api_users.Controllers
                         );
                 }
 
-                return Ok(lista);
+                //return Ok(lista);
+                string jsonResult = JsonSerializer.Serialize(lista); // Serializa la lista en formato JSON
+
+                return Content(jsonResult, "application/json"); // Devuelve el resultado en formato JSON
+
             }
             catch (Exception ex)
             {

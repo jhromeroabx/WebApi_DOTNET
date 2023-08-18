@@ -6,14 +6,18 @@ using Minio.DataModel;
 using Minio.Exceptions;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
+
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.PixelFormats;
+
 using System.IO;
 using System.Reactive.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using web_api_users.Controllers.Clients;
 using web_api_users.Controllers.ParamsDTO;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace web_api_users.Controllers
 {
@@ -221,9 +225,6 @@ namespace web_api_users.Controllers
                 "image/webp"
                 };
 
-                int width = 0;
-                int height = 0;
-
                 // Si el archivo es un tipo de imagen permitido
                 if (allowedContentTypes.Contains(contentType))
                 {
@@ -235,17 +236,21 @@ namespace web_api_users.Controllers
                         await file.CopyToAsync(memoryStream);
                         memoryStream.Position = 0;
 
-                        using (var image = new Bitmap(memoryStream))
+                        using (var image = Image.Load(memoryStream))
                         {
                             if (image.Width > maxResolutionWidth && image.Height > maxResolutionHeight)
                             {
-                                // Reducción de resolución utilizando Bitmap
-                                using var reducedImage = new Bitmap(image, maxResolutionWidth, maxResolutionHeight);
-                                using var memoryStreamNext = new MemoryStream();
-                                reducedImage.Save(memoryStreamNext, ImageFormat.Jpeg); // Cambia el formato según tus necesidades
-                                memoryStreamNext.Position = 0;
+                                image.Mutate(x => x.Resize(new ResizeOptions
+                                {
+                                    Size = new Size(maxResolutionWidth, maxResolutionHeight),
+                                    Mode = ResizeMode.Max // Otras opciones son disponibles
+                                }));
+
+                                using var resizedStream = new MemoryStream();
+                                image.Save(resizedStream, new JpegEncoder()); // Cambia el codificador según tus necesidades
+                                resizedStream.Position = 0;
                                 // Continuar con el procesamiento y almacenamiento del objeto reducido
-                                await ProcessAndStoreImage(nameBucket, nameObject, contentType, memoryStreamNext);
+                                await ProcessAndStoreImage(nameBucket, nameObject, contentType, resizedStream);
                                 return Ok("¡Se creó la imagen!");
                             }
                             else

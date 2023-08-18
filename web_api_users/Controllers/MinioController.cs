@@ -12,6 +12,7 @@ using System.IO;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using web_api_users.Controllers.Clients;
+using web_api_users.Controllers.ParamsDTO;
 
 namespace web_api_users.Controllers
 {
@@ -20,12 +21,12 @@ namespace web_api_users.Controllers
     public class MinioController : ControllerBase
     {
         private readonly IFileManagerFactory _fileManagerFactory;
-        private readonly IWebHostEnvironment _environment;
+        //private readonly IWebHostEnvironment _environment;
 
         public MinioController(IFileManagerFactory fileManagerFactory, IWebHostEnvironment environment)
         {
             _fileManagerFactory = fileManagerFactory;
-            _environment = environment;
+            //_environment = environment;
         }
 
         [HttpPost]
@@ -75,11 +76,18 @@ namespace web_api_users.Controllers
             {
                 var listBucketResponse = await _fileManagerFactory.GetMinio().ListBucketsAsync();
 
-                var lista = "";
+                List<BucketInfo> lista = new();
 
                 foreach (var bucket in listBucketResponse.Buckets)
                 {
-                    lista += "\n bucket '" + bucket.Name + "' created at " + bucket.CreationDate + "\n";
+                    //lista += "\n bucket '" + bucket.Name + "' created at " + bucket.CreationDate + "\n";
+                    lista.Add(
+                         new BucketInfo
+                         {
+                             Name = bucket.Name,
+                             CreationDate = bucket.CreationDateDateTime
+                         }
+                        );
                 }
 
                 return Ok(lista);
@@ -256,7 +264,7 @@ namespace web_api_users.Controllers
                         await ProcessAndStoreImage(nameBucket, nameObject, contentType, memoryStream);
                         return Ok("¡Se creó la imagen!");
                     }
-                }                
+                }
             }
             catch (Exception ex)
             {

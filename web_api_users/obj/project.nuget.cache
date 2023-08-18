@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Nzujzgvrfjuf98DoNNUJDsQ1w1aHxHXdSe1jDefqe1dynmB3H8LnhZErnHZltRRyKXuSsKy5Yz1Li7L9SzIFFA==",
+  "dgSpecHash": "0J/vVYDpRDh+nRjBz0q3mJeZIi0qFeCk/VlOW/PWppiLJKiltxjXxM8QAhfObIKLbCKPIx6AIm22/3EDLXts5Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\jhose\\source\\repos\\jhromeroabx\\WebApi_DOTNET\\web_api_users\\web_api_users.csproj",
   "expectedPackageFiles": [
@@ -61,6 +61,7 @@
     "C:\\Users\\jhose\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\jhose\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\jhose\\.nuget\\packages\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "C:\\Users\\jhose\\.nuget\\packages\\sixlabors.imagesharp\\3.0.1\\sixlabors.imagesharp.3.0.1.nupkg.sha512",
     "C:\\Users\\jhose\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
     "C:\\Users\\jhose\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
     "C:\\Users\\jhose\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",

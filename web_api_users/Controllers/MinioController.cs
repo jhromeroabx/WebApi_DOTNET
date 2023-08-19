@@ -113,7 +113,7 @@ namespace web_api_users.Controllers
         {
             try
             {
-                var lista = "";
+                List<ObjectInfo> lista = new();
                 BucketExistsArgs bucketExistsArgs = new BucketExistsArgs().WithBucket(name);
 
                 bool found = await _fileManagerFactory.GetMinio().BucketExistsAsync(bucketExistsArgs);
@@ -135,13 +135,20 @@ namespace web_api_users.Controllers
                         return Ok("No hay objetos");
                     }
 
+
                     IDisposable subscription = observable.Subscribe(
-                        item => lista += "\n object: '" + item.Key + "' created or modified at " + item.LastModifiedDateTime + "\n",
-                        ex => lista += "\n Error ocurred:" + ex.Message + " \n",
+                        // item => lista += "\n object: '" + item.Key + "' created or modified at " + item.LastModifiedDateTime + "\n",
+                        item => lista.Add(new ObjectInfo
+                        {
+                            Key = item.Key,
+                            LastModifiedDateTime = item.LastModifiedDateTime
+                        }),
+
+                        ex => Console.WriteLine("\n Error ocurred:" + ex.Message + " \n"),
                         () =>
                         {
-                            lista += "OnComplete: {0}";
-                            completionSource.SetResult(lista);
+                            Console.WriteLine("OnComplete: {0}");
+                            completionSource.SetResult(lista.ToString());
                         });
 
                     await completionSource.Task;
@@ -325,9 +332,10 @@ namespace web_api_users.Controllers
                     .WithBucket(nameBucket)
                     .WithObject(nameObject);
 
-                await _fileManagerFactory.GetMinio().GetObjectAsync(args);
+                var objeto = await _fileManagerFactory.GetMinio().GetObjectAsync(args);
+                var typodoc = objeto.ContentType;
                 byte[] bphoto = bytesFromPhoto;
-                return File(fileContents: bphoto, "image/jpeg");
+                return File(fileContents: bphoto, typodoc);
             }
             catch (Exception ex)
             {

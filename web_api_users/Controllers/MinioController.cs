@@ -289,6 +289,86 @@ namespace web_api_users.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("CreateObjectMp3MINio")]
+        public async Task<IActionResult> CreateObjectMp3MINio(string nameBucket, string nameObject, string contentType, IFormFile file)
+        {
+            if (file.Length <= 0)
+                return BadRequest("Empty file");
+
+            try
+            {
+                StatObjectArgs statObjectArgs = new StatObjectArgs().
+                                                    WithBucket(nameBucket).
+                                                    WithObject(nameObject);
+
+                var obj = await _fileManagerFactory.GetMinio().StatObjectAsync(statObjectArgs);
+
+                return Conflict($"Se encontro el object: {nameObject} existente, no se puede reemplazar, cambie el nombre!");
+            }
+            catch (Minio.Exceptions.ObjectNotFoundException)
+            {
+                
+                // Continuar con el procesamiento y almacenamiento del objeto original
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);
+                    memoryStream.Position = 0;
+
+                    PutObjectArgs args = new PutObjectArgs()
+                    .WithBucket(nameBucket)
+                    .WithObject(nameObject)
+                    .WithStreamData(memoryStream)
+                    .WithObjectSize(memoryStream.Length)
+                    .WithContentType(contentType)
+                    .WithServerSideEncryption(null);
+                    await _fileManagerFactory.GetMinio().PutObjectAsync(args);
+                    return Ok("¡Se creó el audio!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Conflict($"No se creo el object: {nameObject} - el error es:" + ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetObjectMp3MINio")]
+        public async Task<IActionResult> GetObjectMp3MINio(string nameBucket, string nameObject)
+        {
+        byte[] bytesFromMp3 = null;
+        try
+            {
+                StatObjectArgs statObjectArgs = new StatObjectArgs().WithBucket(nameBucket).WithObject(nameObject);
+                await _fileManagerFactory.GetMinio().StatObjectAsync(statObjectArgs);
+
+                GetObjectArgs args = new GetObjectArgs().WithCallbackStream((stream) =>
+                {
+                    byte[] buffer = new byte[16 * 1024];
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        int read;
+                        while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            ms.Write(buffer, 0, read);
+                        }
+                        bytesFromMp3 = ms.ToArray();
+                    }
+                })
+                .WithBucket(nameBucket)
+                .WithObject(nameObject);
+
+                await _fileManagerFactory.GetMinio().GetObjectAsync(args);
+
+                var contentType = "audio/mpeg";
+                return File(fileContents: bytesFromMp3, contentType);
+            }
+            catch (Exception ex)
+            {
+                return Conflict($"No se encontro el object: {nameObject}" + ex);
+            }
+        }      
+
         private async Task ProcessAndStoreImage(string nameBucket, string nameObject, string contentType, Stream stream)
         {
             // Puedes realizar cualquier procesamiento adicional necesario antes de almacenar la imagen

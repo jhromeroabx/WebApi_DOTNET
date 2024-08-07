@@ -32,7 +32,7 @@ namespace web_api_users
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "web_api_users", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "web_api_minio", Version = "v1" });
             });
 
             //services.AddCors(options =>

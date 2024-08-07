@@ -9,7 +9,7 @@ namespace web_api_users.Controllers.Clients
         public FileManager()
         {
             this.minio = new MinioClient()
-                                    .WithEndpoint("192.168.18.96:8530")
+                                    .WithEndpoint("192.168.1.139:8530")
                                     .WithCredentials("123wasd",
                                              "123wasd@wasd")
                                     .Build();
